@@ -1,0 +1,8 @@
+﻿  Engine.cpp
+f:\weaii\semestr 5\grafika komputerowa\solarsystem3d\solarsystem3d\engine.cpp(11): warning C4305: "inicjowanie": obcięcie z "double" do "GLfloat"
+f:\weaii\semestr 5\grafika komputerowa\solarsystem3d\solarsystem3d\engine.cpp(12): warning C4305: "inicjowanie": obcięcie z "double" do "GLfloat"
+f:\weaii\semestr 5\grafika komputerowa\solarsystem3d\solarsystem3d\engine.cpp(21): warning C4244: "=": konwersja z "double" do "float", możliwa utrata danych
+f:\weaii\semestr 5\grafika komputerowa\solarsystem3d\solarsystem3d\engine.cpp(22): warning C4244: "=": konwersja z "double" do "float", możliwa utrata danych
+f:\weaii\semestr 5\grafika komputerowa\solarsystem3d\solarsystem3d\engine.cpp(73): warning C4244: "=": konwersja z "double" do "GLfloat", możliwa utrata danych
+f:\weaii\semestr 5\grafika komputerowa\solarsystem3d\solarsystem3d\engine.cpp(74): warning C4244: "=": konwersja z "double" do "GLfloat", możliwa utrata danych
+  SolarSystem3D.vcxproj -> F:\WEAiI\semestr 5\Grafika Komputerowa\SolarSystem3D\Debug\SolarSystem3D.exe

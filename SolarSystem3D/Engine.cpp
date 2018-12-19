@@ -1,45 +1,43 @@
 #include <stdlib.h>
+#include <iostream>
 #include <gl/glut.h>
 #include <math.h>
 #include "Move.hpp"
+#include "DrawSolarSystem.h"
+#include "ConcretePlanet.h"
+#include "PlanetsData.h"
 
 #define ASPECT_1_1 1
 
 #define FPS 50
 
-bool isMazeIsDrawn = false;
-Move* move;
+Move* move; //ruch
+DrawSolarSystem* drawing; //rysowanie planet
 
-GLfloat alfa = 0.1;
-GLfloat beta = 0.2;
+radiusOfPlanets* planetsRadius;
+radiusOfMoons* moonsRadius;
+distanceMoonsFromPlanets* distanceMoonPlanet;
+distanceFromTheSun* distancePlanetSun;
+speedOfThePlanets* speedPlanet;
 
+Planets* planets; //struktura z obiektami planet
 
 void display() {
-	
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //czyszczenie buforu koloru i z-buforu
 	
-	glClearColor(1.0, 1.0, 1.0, 1.0); //bialy
+	glClearColor(0, 0, 0, 1.0); //czarny
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
 	gluLookAt(move->xPos, 0.5, move->zPos, move->xLookAt, 0.5, move->zLookAt, 0, 1, 0);
 	//gluLookAt(move.xPos, 10, move.zPos, move.xLookAt, 0.5, move.zLookAt, 0, 1, 0); //widok z gory
 
-	glColor3f(1, 1, 0);
-	glutSolidSphere(5, 12, 12);
-	glRotatef(alfa, 0, 1, 0);
-	glTranslatef(40, 0, 0);
-	glColor3f(0, 0, 1);
-	glutSolidSphere(3, 12, 12);
-	glRotatef(beta, 0, 1, 0);
-	glTranslatef(10, 0, 0);
-	glColor3f(0.5, 0.5, 0.5);
-	glutSolidSphere(1, 12, 12);
+
+	drawing->drawPlanets(planets);
 
 	
-	/*
-	glBegin(GL_LINES);
+/*	glBegin(GL_LINES);
 		glColor3f(1,0,0);
 		glVertex3f(0, 0, 0);
 		glVertex3f(100, 0, 0);
@@ -51,7 +49,9 @@ void display() {
 		glVertex3f(0, 0, 100);
 	glEnd();
 	*/
-	glFlush();
+	
+	
+	//glFlush();
 	glutSwapBuffers();
 
 }
@@ -59,9 +59,6 @@ void display() {
 
 
 void timer(int val) {
-
-	alfa = alfa + 0.1;
-	beta = beta + 0.1;
 
 	move->angle = move->angle + move->turn;
 
@@ -81,7 +78,7 @@ void reshape(int width, int height) {
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(75, 1, 0.01, 100);
+	gluPerspective(75, 1, 0.01, 100000);
 	
 
 	display();
@@ -150,7 +147,17 @@ void mouseButton(int button, int state, int x, int y) {
 
 }
 
+void initializeDataOfPlanets() {
+	planetsRadius = new radiusOfPlanets;
+	moonsRadius = new radiusOfMoons;
+	distanceMoonPlanet = new distanceMoonsFromPlanets;
+	distancePlanetSun = new distanceFromTheSun;
+	speedPlanet = new speedOfThePlanets;
+}
 
+void createPlanets() {
+	planets->earth = new ConcretePlanet(planetsRadius->earth/100 , distancePlanetSun->earth/500000, speedPlanet->earth, 1);
+}
 
 
 
@@ -158,6 +165,12 @@ int main(int argc, char *argv[]) {
 
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH); //podwojne buforowanie, ostatni parametr do z-bufora
+	
+	initializeDataOfPlanets();
+	planets = new Planets; //struktura z planetami
+	createPlanets();
+	drawing = new DrawSolarSystem();
+
 	glutInitWindowSize(600, 600);
 	glutCreateWindow("Maze3D");
 	glutDisplayFunc(display); 
@@ -169,8 +182,10 @@ int main(int argc, char *argv[]) {
 	glutSpecialUpFunc(specialUpKeys);//obsluga puszczenia klawiszy 
 	glutTimerFunc(1000 / FPS, timer, 0); //timer
 
+
+
 	move = new Move();
-	move->setPos(40, 40);
+	move->setPos(200, 200);
 
 	glEnable(GL_DEPTH_TEST);//wlaczenie bufora z
 	//glDepthFunc(GL_GEQUAL);
@@ -178,6 +193,13 @@ int main(int argc, char *argv[]) {
 	
 
 	glutMainLoop();
+
+	delete planetsRadius;
+	delete moonsRadius;
+	delete distanceMoonPlanet;
+	delete distancePlanetSun;
+	delete speedPlanet;
+	delete planets;
 
 	return(0);
 }

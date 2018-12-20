@@ -38,6 +38,16 @@ void Move::turnRight(bool move) {
 	else turn = 0;
 }
 
+void Move::moveUp() {
+	yPos = yPos + 50;
+
+}
+
+void Move::moveDown() {
+	if (yPos > 500)
+		yPos = yPos - 50;
+}
+
 
 Move::Move()
 {

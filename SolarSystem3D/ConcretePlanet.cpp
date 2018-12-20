@@ -9,10 +9,11 @@ void ConcretePlanet::draw() {
 	else {
 		angle = 0;
 	}
+	glPushMatrix();
 	glRotated(angle, 0, 1, 0);
 	glTranslated(distanceFromSun, 0, 0);
-	glColor3f(1, 1, 0);
 	glutSolidSphere(radius, 50, 50);
+	glPopMatrix();
 }
 
 ConcretePlanet::ConcretePlanet(double radius, double distanceFromSun, double speed, double valueToIncrementAngle) {

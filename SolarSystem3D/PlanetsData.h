@@ -50,9 +50,9 @@ struct distanceFromTheSun {
 	double earth = 149597887;
 	double mars = 227936637;
 	double jupiter = 778412027;
-	double saturn = 1426725;
-	double uranus = 2870972;
-	double neptune = 4498252;
+	double saturn = 1426725413;
+	double uranus = 2870972220;
+	double neptune = 4498252900;
 };
 
 struct speedOfThePlanets {

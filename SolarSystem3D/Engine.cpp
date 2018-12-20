@@ -11,6 +11,11 @@
 
 #define FPS 50
 
+#define radiusPlanetDivider 10
+#define radiusMoonsDivider 
+#define distanceMoonPlanetDivider
+#define distancePlanetSunDivider 25000
+
 Move* move; //ruch
 DrawSolarSystem* drawing; //rysowanie planet
 
@@ -30,7 +35,8 @@ void display() {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	gluLookAt(move->xPos, 0.5, move->zPos, move->xLookAt, 0.5, move->zLookAt, 0, 1, 0);
+	gluLookAt(10000, 5000, 10000, 0, 0, 0, 0, 1, 0);
+	//gluLookAt(move->xPos, move->yPos, move->zPos, move->xLookAt, move->yLookAt, move->zLookAt, 0, 1, 0);
 	//gluLookAt(move.xPos, 10, move.zPos, move.xLookAt, 0.5, move.zLookAt, 0, 1, 0); //widok z gory
 
 
@@ -76,19 +82,29 @@ void timer(int val) {
 
 void reshape(int width, int height) {
 
+	if (height == 0)	
+		height = 1;
+
+	glViewport(0, 0, width, height);
+
+	/* Ustawienie obszaru obcinania z uwzglêdnieniem proporcji okna */
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(75, 1, 0.01, 100000);
-	
-
-	display();
+	/* Rzutowanie perspektywiczne */
+	gluPerspective(50, (float)width / height, 0.01, 50000000000);
 }
 
 void keyboard(unsigned char key, int x, int y) {
 	switch (key)
 	{
-	case 0x1b:
+	case 27: //esc
 		exit(0);
+		break;
+	case 43://+
+		move->moveUp();
+		break;
+	case 45://-
+		move->moveDown();
 		break;
 	default:
 		break;
@@ -100,19 +116,19 @@ void specialKeys(int key, int x, int y) {
 	{
 	case GLUT_KEY_UP:
 		move->moveForward(true);
-		display();
+		glutPostRedisplay();
 		break;
 	case GLUT_KEY_DOWN:
 		move->moveBackward(true);
-		display();
+		glutPostRedisplay(); 
 		break;
 	case GLUT_KEY_LEFT:
 		move->turnLeft(true);
-		display();
+		glutPostRedisplay();
 		break;
 	case GLUT_KEY_RIGHT:
 		move->turnRight(true);
-		display();
+		glutPostRedisplay();
 		break;
 	default:
 		break;
@@ -156,7 +172,14 @@ void initializeDataOfPlanets() {
 }
 
 void createPlanets() {
-	planets->earth = new ConcretePlanet(planetsRadius->earth/100 , distancePlanetSun->earth/500000, speedPlanet->earth, 1);
+	planets->mercury = new ConcretePlanet(planetsRadius->mercury / radiusPlanetDivider, distancePlanetSun->mercury / distancePlanetSunDivider, speedPlanet->mercury, 1);
+	planets->venus = new ConcretePlanet(planetsRadius->venus / radiusPlanetDivider, distancePlanetSun->venus / distancePlanetSunDivider, speedPlanet->venus, 1);
+	planets->earth = new ConcretePlanet(planetsRadius->earth/ radiusPlanetDivider, distancePlanetSun->earth/ distancePlanetSunDivider, speedPlanet->earth, 1);
+	planets->mars= new ConcretePlanet(planetsRadius->mars / radiusPlanetDivider, distancePlanetSun->mars / distancePlanetSunDivider, speedPlanet->mars, 1);
+	planets->jupiter= new ConcretePlanet(planetsRadius->jupiter / radiusPlanetDivider, distancePlanetSun->jupiter / distancePlanetSunDivider, speedPlanet->jupiter, 1);
+	planets->saturn= new ConcretePlanet(planetsRadius->saturn / radiusPlanetDivider, distancePlanetSun->saturn / distancePlanetSunDivider, speedPlanet->saturn, 1);
+	planets->uranus= new ConcretePlanet(planetsRadius->uranus / radiusPlanetDivider, distancePlanetSun->uranus / distancePlanetSunDivider, speedPlanet->uranus, 1);
+	planets->neptune= new ConcretePlanet(planetsRadius->neptune / radiusPlanetDivider, distancePlanetSun->neptune / distancePlanetSunDivider, speedPlanet->neptune, 1);
 }
 
 
@@ -185,7 +208,7 @@ int main(int argc, char *argv[]) {
 
 
 	move = new Move();
-	move->setPos(200, 200);
+	move->setPos(500, 500);
 
 	glEnable(GL_DEPTH_TEST);//wlaczenie bufora z
 	//glDepthFunc(GL_GEQUAL);

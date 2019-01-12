@@ -16,8 +16,14 @@
 #define distanceMoonPlanetDivider
 #define distancePlanetSunDivider 25000
 
+struct widok {
+	bool widokZGory = true;
+	bool widokZNadSlonca = false;
+};
+
 Move* move; //ruch
 DrawSolarSystem* drawing; //rysowanie planet
+widok* view;
 
 radiusOfPlanets* planetsRadius;
 radiusOfMoons* moonsRadius;
@@ -34,16 +40,21 @@ void display() {
 	glClearColor(0, 0, 0, 1.0); //czarny
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-
-	gluLookAt(10000, 5000, 10000, 0, 0, 0, 0, 1, 0);
-	//gluLookAt(move->xPos, move->yPos, move->zPos, move->xLookAt, move->yLookAt, move->zLookAt, 0, 1, 0);
-	//gluLookAt(move.xPos, 10, move.zPos, move.xLookAt, 0.5, move.zLookAt, 0, 1, 0); //widok z gory
+	
+	if(view->widokZGory)
+		gluLookAt(move->xPos, move->yPos, move->zPos, move->xLookAt, 5000, move->zLookAt, 0, 1, 0);
+	else if(view->widokZNadSlonca)
+		gluLookAt(move->xPos, 15000, move->zPos, 5000, 1000, 5000, 0, 1, 0);
+	
+	//gluLookAt(0, 15000, 0, 10000, 5000, 14000, 0, 1, 0);
+	
+	//gluLookAt(move->xPos, 15000, move->zPos, move->xLookAt, 5000, move->zLookAt, 0, 1, 0);
 
 
 	drawing->drawPlanets(planets);
 
 	
-/*	glBegin(GL_LINES);
+	glBegin(GL_LINES);
 		glColor3f(1,0,0);
 		glVertex3f(0, 0, 0);
 		glVertex3f(100, 0, 0);
@@ -54,7 +65,7 @@ void display() {
 		glVertex3f(0, 0, 0);
 		glVertex3f(0, 0, 100);
 	glEnd();
-	*/
+	
 	
 	
 	//glFlush();
@@ -71,6 +82,7 @@ void timer(int val) {
 	//aktualizacja pozycji kamery na podstawie prêdkoœci kamery
 	move->xPos = move->xPos + move->speed * sin(move->angle);
 	move->zPos = move->zPos + move->speed * cos(move->angle);
+	move->yPos = move->yPos + move->updown;
 
 	//aktualizacja kierunku patrzenia kamery na podstawie jej pozycji
 	move->xLookAt = (float)(move->xPos + sin(move->angle));
@@ -101,10 +113,24 @@ void keyboard(unsigned char key, int x, int y) {
 		exit(0);
 		break;
 	case 43://+
-		move->moveUp();
+		move->moveUp(true);
 		break;
 	case 45://-
-		move->moveDown();
+		move->moveDown(true);
+		break;
+	default:
+		break;
+	}
+}
+
+void keyboardUp(unsigned char key, int x, int y) {
+	switch (key)
+	{
+	case 43://+
+		move->moveUp(false);
+		break;
+	case 45://-
+		move->moveDown(false);
 		break;
 	default:
 		break;
@@ -182,6 +208,38 @@ void createPlanets() {
 	planets->neptune= new ConcretePlanet(planetsRadius->neptune / radiusPlanetDivider, distancePlanetSun->neptune / distancePlanetSunDivider, speedPlanet->neptune, 1);
 }
 
+void setAllViewsToFalse() {
+	view->widokZGory = false;
+	view->widokZNadSlonca = false;
+}
+
+void menu(int num) {
+	if (num == 1) {
+		setAllViewsToFalse();
+		view->widokZGory = true;
+	}
+	if (num == 2) {
+		setAllViewsToFalse();
+		view->widokZNadSlonca = true;
+	}
+	else {
+		
+	}
+	glutPostRedisplay();
+}
+
+void createMenu(void) {
+	int submenu1 = glutCreateMenu(menu);
+	glutAddMenuEntry("Widok z gory", 1);
+	glutAddMenuEntry("Widok z nad s³oñca", 2);
+
+
+	int submenu7 = glutCreateMenu(menu);
+	glutAddSubMenu("Widok", submenu1);
+
+	glutAttachMenu(GLUT_RIGHT_BUTTON);
+}
+
 
 
 int main(int argc, char *argv[]) {
@@ -199,10 +257,13 @@ int main(int argc, char *argv[]) {
 	glutDisplayFunc(display); 
 	glutReshapeFunc(reshape);
 	glutKeyboardFunc(keyboard);
+	glutKeyboardUpFunc(keyboardUp);
 	glutMouseFunc(mouseButton); //obsluga przyciskow myszy
 	glutMotionFunc(mouseMotion); //obsluga ruchu myszki
 	glutSpecialFunc(specialKeys); //strzalki
 	glutSpecialUpFunc(specialUpKeys);//obsluga puszczenia klawiszy 
+	view = new widok;
+	createMenu();
 	glutTimerFunc(1000 / FPS, timer, 0); //timer
 
 

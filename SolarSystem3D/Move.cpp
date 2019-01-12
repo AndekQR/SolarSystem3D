@@ -1,4 +1,5 @@
 #include "Move.hpp"
+#include <iostream>
 
 
 void Move::setPos(float inXPos, float inZPos) {
@@ -6,6 +7,7 @@ void Move::setPos(float inXPos, float inZPos) {
 	xPos = inXPos;
 	initZPos = inZPos;
 	zPos = inZPos;
+
 }
 
 void Move::reset() {
@@ -21,31 +23,28 @@ void Move::moveForward(bool move) {
 }
 
 void Move::moveBackward(bool move) {
-	if (move)
-		speed = -0.03f;
+	if (move) speed = -0.03f;
 	else speed = 0;
 }
 
 void Move::turnLeft(bool move) {
-	if (move)
-		turn = 0.05f;
+	if (move) turn = 0.05f;
 	else turn = 0;
 }
 
 void Move::turnRight(bool move) {
-	if (move)
-		turn = -0.05f;
+	if (move) turn = -0.05f;
 	else turn = 0;
 }
 
-void Move::moveUp() {
-	yPos = yPos + 50;
-
+void Move::moveUp(bool move){
+	if (move) updown = 2000;
+	else updown = 0;
 }
 
-void Move::moveDown() {
-	if (yPos > 500)
-		yPos = yPos - 50;
+void Move::moveDown(bool move){
+	if (move) updown = -2000;
+	else updown = 0;
 }
 
 

@@ -10,8 +10,8 @@ void DrawSolarSystem::drawPlanets(struct Planets* planets) {
 	planets->mars->draw();
 	planets->jupiter->draw();
 	planets->saturn->draw();
-	//planets->uranus->draw();
-	//planets->neptune->draw();
+	planets->uranus->draw();
+	planets->neptune->draw();
 
 }
 

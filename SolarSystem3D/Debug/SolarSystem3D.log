@@ -1,2 +1,7 @@
-﻿  Engine.cpp
+﻿  ConcretePlanet.cpp
+d:\weaii\semestr 5\grafika komputerowa\solarsystem3d\solarsystem3d\concreteplanet.cpp(45): warning C4244: 'argument': conversion from '_Ty' to 'GLfloat', possible loss of data
+          with
+          [
+              _Ty=double
+          ]
   SolarSystem3D.vcxproj -> D:\WEAiI\semestr 5\Grafika Komputerowa\SolarSystem3D\Debug\SolarSystem3D.exe

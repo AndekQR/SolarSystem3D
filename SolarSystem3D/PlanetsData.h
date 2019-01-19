@@ -67,6 +67,7 @@ struct speedOfThePlanets {
 };
 
 struct Planets {
+	ConcretePlanet* sun;
 	ConcretePlanet* mercury;
 	ConcretePlanet* venus;
 	ConcretePlanet* earth;
@@ -77,29 +78,5 @@ struct Planets {
 	ConcretePlanet* neptune;
 };
 
-/*struct anglesOfPlanetsMoons {
-	double mercury = 0;
-	double venus = 0;
-	double earth = 0;
-	double mars = 0;
-	double jupiter = 0;
-	double saturn = 0;
-	double uranus = 0;
-	double neptune = 0;
 
-	double moon = 0;
-	double marsFobos = 0;
-	double marsDeimos = 0;
-	double jupiterLo = 0;
-	double jupiterEuropa = 0;
-	double jupiterGanimedes = 0;
-	double saturnMimas = 0;
-	double saturnEnceladus = 0;
-	double saturnTetyda = 0;
-	double uranusAriel = 0;
-	double uranusUmbriel = 0;
-	double neptuneTryton = 0;
-	double neptuneNereida = 0;
-};
-*/
 

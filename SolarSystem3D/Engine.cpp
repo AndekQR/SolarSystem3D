@@ -6,6 +6,7 @@
 #include "DrawSolarSystem.h"
 #include "ConcretePlanet.h"
 #include "PlanetsData.h"
+#include "TextureManager.h"
 
 #define ASPECT_1_1 1
 
@@ -14,11 +15,16 @@
 #define radiusPlanetDivider 10
 #define radiusMoonsDivider 
 #define distanceMoonPlanetDivider
-#define distancePlanetSunDivider 25000
+#define distancePlanetSunDivider 10
+#define speedPlanetDivider 50
+
+
+
 
 struct widok {
 	bool widokZGory = true;
 	bool widokZNadSlonca = false;
+	bool widokMercury = false;
 };
 
 Move* move; //ruch
@@ -32,6 +38,12 @@ distanceFromTheSun* distancePlanetSun;
 speedOfThePlanets* speedPlanet;
 
 Planets* planets; //struktura z obiektami planet
+TextureManager* textureManager;
+GLuint tex[9];
+
+int i = 0;
+double xFollowCamera;
+double zFollowCamera;
 
 void display() {
 
@@ -40,11 +52,23 @@ void display() {
 	glClearColor(0, 0, 0, 1.0); //czarny
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	
+
+
+
 	if(view->widokZGory)
 		gluLookAt(move->xPos, move->yPos, move->zPos, move->xLookAt, 5000, move->zLookAt, 0, 1, 0);
 	else if(view->widokZNadSlonca)
-		gluLookAt(move->xPos, 15000, move->zPos, 5000, 1000, 5000, 0, 1, 0);
+		gluLookAt(move->xPos, move->yPos, move->zPos, move->xLookAt, 5000, move->zLookAt, 0, 1, 0);
+	else if (view->widokMercury) {
+		gluLookAt(xFollowCamera, move->yPos, zFollowCamera, planets->mercury->xCoord[i], 5000, planets->mercury->zCoord[i], 0, 1, 0);
+		//std::cout << planets->mercury->xCoord[i] << ", " << planets->mercury->zCoord[i] << std::endl;
+	}
+
+
+		
+
+	//i = i + 100; //fajny widok!
+	//gluLookAt(planets->mercury->x + i, move->yPos, planets->mercury->z + i, planets->mercury->x, 0, planets->mercury->z, 0, 1, 0);
 	
 	//gluLookAt(0, 15000, 0, 10000, 5000, 14000, 0, 1, 0);
 	
@@ -53,7 +77,7 @@ void display() {
 
 	drawing->drawPlanets(planets);
 
-	
+	/*
 	glBegin(GL_LINES);
 		glColor3f(1,0,0);
 		glVertex3f(0, 0, 0);
@@ -65,6 +89,7 @@ void display() {
 		glVertex3f(0, 0, 0);
 		glVertex3f(0, 0, 100);
 	glEnd();
+	*/
 	
 	
 	
@@ -84,9 +109,20 @@ void timer(int val) {
 	move->zPos = move->zPos + move->speed * cos(move->angle);
 	move->yPos = move->yPos + move->updown;
 
+	
+
+	//std::cout << move->yPos << std::endl;
+
 	//aktualizacja kierunku patrzenia kamery na podstawie jej pozycji
 	move->xLookAt = (float)(move->xPos + sin(move->angle));
 	move->zLookAt = (float)(move->zPos + cos(move->angle));
+
+
+	i = i + 1;
+	if (i == 999)
+		i = 0;
+	xFollowCamera = planets->mercury->xCoord[i] + cos(move->angle)*(1000);
+	zFollowCamera = planets->mercury->zCoord[i] + cos(move->angle)*(1000);
 
 	glutPostRedisplay();
 	glutTimerFunc(1000 / FPS, timer, 0);
@@ -196,17 +232,49 @@ void initializeDataOfPlanets() {
 	distancePlanetSun = new distanceFromTheSun;
 	speedPlanet = new speedOfThePlanets;
 }
+void setRadiusElipseOfPlanets() {
+	planets->mercury->setRadiusOfElipse(distancePlanetSun->mercury / 7000);
+	planets->venus->setRadiusOfElipse(distancePlanetSun->venus / 7000);
+	planets->earth->setRadiusOfElipse(distancePlanetSun->earth / 7000);
+	planets->mars->setRadiusOfElipse(distancePlanetSun->mars / 7000);
+	planets->jupiter->setRadiusOfElipse(distancePlanetSun->jupiter / 7000);
+	planets->saturn->setRadiusOfElipse(distancePlanetSun->saturn / 25000);
+	planets->uranus->setRadiusOfElipse(distancePlanetSun->uranus / 23000);
+	planets->neptune->setRadiusOfElipse(distancePlanetSun->neptune / 25000);
+}
 
 void createPlanets() {
-	planets->mercury = new ConcretePlanet(planetsRadius->mercury / radiusPlanetDivider, distancePlanetSun->mercury / distancePlanetSunDivider, speedPlanet->mercury, 1);
-	planets->venus = new ConcretePlanet(planetsRadius->venus / radiusPlanetDivider, distancePlanetSun->venus / distancePlanetSunDivider, speedPlanet->venus, 1);
-	planets->earth = new ConcretePlanet(planetsRadius->earth/ radiusPlanetDivider, distancePlanetSun->earth/ distancePlanetSunDivider, speedPlanet->earth, 1);
-	planets->mars= new ConcretePlanet(planetsRadius->mars / radiusPlanetDivider, distancePlanetSun->mars / distancePlanetSunDivider, speedPlanet->mars, 1);
-	planets->jupiter= new ConcretePlanet(planetsRadius->jupiter / radiusPlanetDivider, distancePlanetSun->jupiter / distancePlanetSunDivider, speedPlanet->jupiter, 1);
-	planets->saturn= new ConcretePlanet(planetsRadius->saturn / radiusPlanetDivider, distancePlanetSun->saturn / distancePlanetSunDivider, speedPlanet->saturn, 1);
-	planets->uranus= new ConcretePlanet(planetsRadius->uranus / radiusPlanetDivider, distancePlanetSun->uranus / distancePlanetSunDivider, speedPlanet->uranus, 1);
-	planets->neptune= new ConcretePlanet(planetsRadius->neptune / radiusPlanetDivider, distancePlanetSun->neptune / distancePlanetSunDivider, speedPlanet->neptune, 1);
+	planets->mercury = new ConcretePlanet("mercury", planetsRadius->mercury/radiusPlanetDivider , distancePlanetSun->mercury /7000, speedPlanet->mercury / speedPlanetDivider);
+	planets->mercury->init(textureManager, tex);
+	
+	planets->venus = new ConcretePlanet("venus", planetsRadius->venus / radiusPlanetDivider, distancePlanetSun->venus / 7000, speedPlanet->venus / speedPlanetDivider);
+	planets->venus->init(textureManager, tex);
+	
+	planets->earth = new ConcretePlanet("earth", planetsRadius->earth / radiusPlanetDivider, distancePlanetSun->earth/ 7000, speedPlanet->earth / speedPlanetDivider);
+	planets->earth->init(textureManager, tex);
+	
+	planets->mars= new ConcretePlanet("mars", planetsRadius->mars / radiusPlanetDivider, distancePlanetSun->mars/ 7000, speedPlanet->mars / speedPlanetDivider);
+	planets->mars->init(textureManager, tex);
+	
+	planets->jupiter= new ConcretePlanet("jupiter", planetsRadius->jupiter / 20, distancePlanetSun->jupiter / 7000, speedPlanet->jupiter / speedPlanetDivider);
+	planets->jupiter->init(textureManager, tex);
+	
+	planets->saturn= new ConcretePlanet("saturn", planetsRadius->saturn / 30, distancePlanetSun->saturn / 25000, speedPlanet->saturn / speedPlanetDivider);
+	planets->saturn->init(textureManager, tex);
+	
+	planets->uranus= new ConcretePlanet("uranus", planetsRadius->uranus / 25, distancePlanetSun->uranus / 23000, speedPlanet->uranus / speedPlanetDivider);
+	planets->uranus->init(textureManager, tex);
+
+	planets->neptune= new ConcretePlanet("neptune", planetsRadius->neptune / 25, distancePlanetSun->neptune / 25000, speedPlanet->neptune / speedPlanetDivider);
+	planets->neptune->init(textureManager, tex);
+	
+	planets->sun = new ConcretePlanet("sun", planetsRadius->sun / 150, 0, 0);
+	planets->sun->init(textureManager, tex);
+
+	setRadiusElipseOfPlanets();
 }
+
+
 
 void setAllViewsToFalse() {
 	view->widokZGory = false;
@@ -214,46 +282,69 @@ void setAllViewsToFalse() {
 }
 
 void menu(int num) {
-	if (num == 1) {
+	switch (num) {
+	case 1:
 		setAllViewsToFalse();
+		move->yPos = 15000;
+		move->initYPos = 15000;
 		view->widokZGory = true;
-	}
-	if (num == 2) {
+		break;
+	case 2:
 		setAllViewsToFalse();
+		move->yPos = 5000;
+		move->initYPos = 5000;
 		view->widokZNadSlonca = true;
+		break;
+	case 3:
+		move->reset();
+		break;
+	case 4:
+		setAllViewsToFalse();
+		view->widokMercury = true;
+		break;
 	}
-	else {
-		
-	}
+
 	glutPostRedisplay();
 }
 
 void createMenu(void) {
 	int submenu1 = glutCreateMenu(menu);
 	glutAddMenuEntry("Widok z gory", 1);
-	glutAddMenuEntry("Widok z nad s³oñca", 2);
+	glutAddMenuEntry("Widok z nad slonca", 2);
+	glutAddMenuEntry("Widok na planete merkury", 4);
+	glutAddMenuEntry("Reset", 3);
 
 
-	int submenu7 = glutCreateMenu(menu);
+	glutCreateMenu(NULL);
 	glutAddSubMenu("Widok", submenu1);
 
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
+}
+
+void loadTextures() {
+	glGenTextures(9, tex);
+
+	if (!textureManager->LoadTexture("sun.jpg", tex[0])) {
+		std::cout << "nie zaladowwano tekstury: metoda: loadTextures" << std::endl;
+	}
 }
 
 
 
 int main(int argc, char *argv[]) {
 
+
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH); //podwojne buforowanie, ostatni parametr do z-bufora
 	
-	initializeDataOfPlanets();
-	planets = new Planets; //struktura z planetami
-	createPlanets();
-	drawing = new DrawSolarSystem();
+
+	
+
+
 
 	glutInitWindowSize(600, 600);
 	glutCreateWindow("Maze3D");
+
 	glutDisplayFunc(display); 
 	glutReshapeFunc(reshape);
 	glutKeyboardFunc(keyboard);
@@ -262,21 +353,31 @@ int main(int argc, char *argv[]) {
 	glutMotionFunc(mouseMotion); //obsluga ruchu myszki
 	glutSpecialFunc(specialKeys); //strzalki
 	glutSpecialUpFunc(specialUpKeys);//obsluga puszczenia klawiszy 
-	view = new widok;
-	createMenu();
-	glutTimerFunc(1000 / FPS, timer, 0); //timer
-
-
-
-	move = new Move();
-	move->setPos(500, 500);
 
 	glEnable(GL_DEPTH_TEST);//wlaczenie bufora z
-	//glDepthFunc(GL_GEQUAL);
-	//glDepthRange(0, 0.1);
-	
+	glEnable(GL_TEXTURE_2D); //w³¹czenie teksturowania
 
+	textureManager = TextureManager::Inst();
+	loadTextures();
+
+	initializeDataOfPlanets();
+	planets = new Planets; //struktura z planetami w planetsData.h
+	createPlanets();
+	drawing = new DrawSolarSystem();
+
+	move = new Move();
+
+	view = new widok;
+
+	createMenu();
+
+	glutTimerFunc(1000 / FPS, timer, 0); //timer
 	glutMainLoop();
+
+
+
+//-------------------------------------------------------------------------------
+	textureManager->UnloadAllTextures();
 
 	delete planetsRadius;
 	delete moonsRadius;

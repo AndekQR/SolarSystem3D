@@ -2,8 +2,7 @@
 
 
 void DrawSolarSystem::drawPlanets(struct Planets* planets) {
-
-	glColor3f(1, 1, 0);
+	planets->sun->draw();
 	planets->mercury->draw();
 	planets->venus->draw();
 	planets->earth->draw();
@@ -13,6 +12,8 @@ void DrawSolarSystem::drawPlanets(struct Planets* planets) {
 	planets->uranus->draw();
 	planets->neptune->draw();
 
+
+	
 }
 
 DrawSolarSystem::DrawSolarSystem() {

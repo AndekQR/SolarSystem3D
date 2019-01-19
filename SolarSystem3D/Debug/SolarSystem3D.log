@@ -1,7 +1,17 @@
 ﻿  ConcretePlanet.cpp
-d:\weaii\semestr 5\grafika komputerowa\solarsystem3d\solarsystem3d\concreteplanet.cpp(45): warning C4244: 'argument': conversion from '_Ty' to 'GLfloat', possible loss of data
+d:\weaii\semestr 5\grafika komputerowa\solarsystem3d\solarsystem3d\concreteplanet.cpp(67): warning C4244: 'argument': conversion from '_Ty' to 'GLfloat', possible loss of data
           with
           [
               _Ty=double
           ]
+  Engine.cpp
+d:\weaii\semestr 5\grafika komputerowa\solarsystem3d\solarsystem3d\engine.cpp(221): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+d:\weaii\semestr 5\grafika komputerowa\solarsystem3d\solarsystem3d\engine.cpp(222): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+d:\weaii\semestr 5\grafika komputerowa\solarsystem3d\solarsystem3d\engine.cpp(223): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+d:\weaii\semestr 5\grafika komputerowa\solarsystem3d\solarsystem3d\engine.cpp(224): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+d:\weaii\semestr 5\grafika komputerowa\solarsystem3d\solarsystem3d\engine.cpp(225): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+d:\weaii\semestr 5\grafika komputerowa\solarsystem3d\solarsystem3d\engine.cpp(226): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+d:\weaii\semestr 5\grafika komputerowa\solarsystem3d\solarsystem3d\engine.cpp(227): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+d:\weaii\semestr 5\grafika komputerowa\solarsystem3d\solarsystem3d\engine.cpp(228): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+  Generating Code...
   SolarSystem3D.vcxproj -> D:\WEAiI\semestr 5\Grafika Komputerowa\SolarSystem3D\Debug\SolarSystem3D.exe

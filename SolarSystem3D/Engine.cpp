@@ -53,18 +53,19 @@ void display() {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-
+	
 
 	if(view->widokZGory)
 		gluLookAt(move->xPos, move->yPos, move->zPos, move->xLookAt, 5000, move->zLookAt, 0, 1, 0);
 	else if(view->widokZNadSlonca)
 		gluLookAt(move->xPos, move->yPos, move->zPos, move->xLookAt, 5000, move->zLookAt, 0, 1, 0);
 	else if (view->widokMercury) {
-		gluLookAt(xFollowCamera, move->yPos, zFollowCamera, planets->mercury->xCoord[i], 5000, planets->mercury->zCoord[i], 0, 1, 0);
-		//std::cout << planets->mercury->xCoord[i] << ", " << planets->mercury->zCoord[i] << std::endl;
+		gluLookAt(planets->mercury->xCoord[i], move->yPos, planets->mercury->zCoord[i], planets->mercury->xCoord[i], 5000, planets->mercury->zCoord[i], 0, 1, 0);
 	}
 
-
+	for (auto i : planets->mercury->xCoord) {
+		std::cout << i << std::endl;
+	}
 		
 
 	//i = i + 100; //fajny widok!
@@ -77,23 +78,7 @@ void display() {
 
 	drawing->drawPlanets(planets);
 
-	/*
-	glBegin(GL_LINES);
-		glColor3f(1,0,0);
-		glVertex3f(0, 0, 0);
-		glVertex3f(100, 0, 0);
-		glColor3f(0, 1, 0);
-		glVertex3f(0, 0, 0);
-		glVertex3f(0, 100, 0);
-		glColor3f(0, 0, 1);
-		glVertex3f(0, 0, 0);
-		glVertex3f(0, 0, 100);
-	glEnd();
-	*/
 	
-	
-	
-	//glFlush();
 	glutSwapBuffers();
 
 }
@@ -323,10 +308,17 @@ void createMenu(void) {
 
 void loadTextures() {
 	glGenTextures(9, tex);
-
-	if (!textureManager->LoadTexture("sun.jpg", tex[0])) {
-		std::cout << "nie zaladowwano tekstury: metoda: loadTextures" << std::endl;
-	}
+	//sun, mercury, venus, earth, mars, jupiter, saturn, uranus, neptune
+	textureManager->LoadTexture("sun.jpg", tex[0]);
+	textureManager->LoadTexture("mercury.jpg", tex[1]);
+	textureManager->LoadTexture("venus.jpg", tex[2]);
+	textureManager->LoadTexture("earth.jpg", tex[3]);
+	textureManager->LoadTexture("mars.jpg", tex[4]);
+	textureManager->LoadTexture("jupiter.jpg", tex[5]);
+	textureManager->LoadTexture("saturn.jpg", tex[6]);
+	textureManager->LoadTexture("uranus.jpg", tex[7]);
+	textureManager->LoadTexture("neptune.jpg", tex[8]);
+	
 }
 
 

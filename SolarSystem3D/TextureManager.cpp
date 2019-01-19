@@ -1,4 +1,4 @@
-//**********************************************
+﻿//**********************************************
 //Singleton Texture Manager class
 //Written by Ben English
 //benjamin.english@oit.edu
@@ -92,7 +92,7 @@ bool TextureManager::LoadTexture(const char* filename, const unsigned int texID,
 	m_texID[texID] = gl_texID;
 	//bind to the new texture ID
 	glBindTexture(GL_TEXTURE_2D, gl_texID);
-	// Ustawienie parametr?w tekstury
+	// Ustawienie parametr�w tekstury
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -105,9 +105,6 @@ bool TextureManager::LoadTexture(const char* filename, const unsigned int texID,
 
 	//Free FreeImage's copy of the data
 	FreeImage_Unload(dib);
-	std::cout << "width:" << width << std::endl;
-	std::cout << "height:" << height << std::endl;
-	std::cout << "fif:" << fif << std::endl;
 	//return success
 	return true;
 }

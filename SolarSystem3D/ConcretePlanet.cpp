@@ -20,6 +20,28 @@ void ConcretePlanet::setRadiusOfElipse(int radius)
 	elipseRadius = radius;
 }
 
+//sun, mercury, venus, earth, mars, jupiter, saturn, uranus, neptune
+void ConcretePlanet::chooseTexture() {
+	if (namePlanet.compare("sun") == 0)
+		textureManager->BindTexture(tex[0]);
+	else if (namePlanet.compare("mercury") == 0)
+		textureManager->BindTexture(tex[1]);
+	else if (namePlanet.compare("venus") == 0)
+		textureManager->BindTexture(tex[2]);
+	else if (namePlanet.compare("earth") == 0)
+		textureManager->BindTexture(tex[3]);
+	else if (namePlanet.compare("mars") == 0)
+		textureManager->BindTexture(tex[4]);
+	else if (namePlanet.compare("jupiter") == 0)
+		textureManager->BindTexture(tex[5]);
+	else if (namePlanet.compare("saturn") == 0)
+		textureManager->BindTexture(tex[6]);
+	else if (namePlanet.compare("uranus") == 0)
+		textureManager->BindTexture(tex[7]);
+	else if (namePlanet.compare("neptune") == 0)
+		textureManager->BindTexture(tex[8]);
+}
+
 void ConcretePlanet::draw() {
 	if (angle<360) {
 		angle = angle + valueToIncrementAngle;
@@ -45,22 +67,22 @@ void ConcretePlanet::draw() {
 		glVertex3f(xCoord[i], 0, zCoord[i]);
 		glEnd();
 	}
+
 	isThereElipseCoord = true;
 
-	if (namePlanet.compare("sun") == 0)
-		textureManager->BindTexture(tex[0]);
+	chooseTexture();
 
 	glPushMatrix();
 	
 	glRotated(angle, 0, 1, 0);
+	glRotated(270, 1, 0, 0);
+
 	glTranslated(distanceFromSun, 0, 0);
-	//glutSolidSphere(radius, 50, 50);
 	gluSphere(quadric, radius, 100, 100);
 
+	glBindTexture(GL_TEXTURE_2D, 0);
 	glPopMatrix();
 }
-
-
 
 
 

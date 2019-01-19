@@ -27,6 +27,7 @@ public:
 	void init(TextureManager* textureManager, GLuint* tex);
 	double x, z;
 	void setRadiusOfElipse(int radius);
+	void chooseTexture();
 	std::vector <double> xCoord;
 	std::vector <double> zCoord;
 	void draw();

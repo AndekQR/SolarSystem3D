@@ -52,5 +52,29 @@
     <Image Include="sun.jpg">
       <Filter>Pliki zasobów</Filter>
     </Image>
+    <Image Include="mars.jpg">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="mercury.jpg">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="neptune.jpg">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="saturn.jpg">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="uranus.jpg">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="venus.jpg">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="earth.jpg">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="jupiter.jpg">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
   </ItemGroup>
 </Project>
